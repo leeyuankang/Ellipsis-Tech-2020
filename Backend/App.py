@@ -25,15 +25,21 @@ def problems():
     
     form_info = request.form
 
+    stock_list = ["BIDU", "TSLA", "UBER"]
+
     # Testing with a random ticker
-    test_ticker_info = yf.Ticker("AAPL").info
+    tickers = {}
+    test_ticker_info = yf.Ticker("UBER").info
+    for stock in stock_list:
+        test_ticker_info = yf.Ticker(stock).info
+        tickers[stock] = test_ticker_info
 
     # Retrive from form
     # stock_ticker = yf.Ticker(form_info["ticker"])
     
     # ticker_info = test_ticker.info
 
-    return test_ticker_info
+    return tickers
 
 if __name__ == "__main__":
     logging.info("Starting application ...")
