@@ -73,6 +73,26 @@ def history():
 
     return json_historical_price
 
+@app.route('/recommendations', methods = ['GET', 'POST'])
+def recommendations():
+
+    msft = yf.Ticker("MSFT")    
+    # form_info = request.form
+        
+    # get historical market data
+    recommendations_df = msft.recommendations
+
+    recommendations_df.reset_index(inplace=True)
+    recommendations_df['Year'] = recommendations_df['Date'].dt.year
+    recommendations_df['date'] = recommendations_df['Date'].dt.date
+    recommendations_df = recommendations_df.rename(columns={'Date': 'Datetime'}).astype(str)
+    recommendations_df.groupby("Datetime")
+    recommendations_df.set_index(['Datetime'], inplace=True)
+
+    json_recommendations = recommendations_df.to_dict('index')
+
+    return json_recommendations
+
 if __name__ == "__main__":
     logging.info("Starting application ...")
     app.run(port=8000, host='0.0.0.0')
